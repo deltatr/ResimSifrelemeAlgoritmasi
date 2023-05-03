@@ -1,7 +1,7 @@
 
 let messages = {
-    "error_0" : "something went wrong, please try again",
-    "error_1" : "extension not supported, please try again"
+    "error_0" : "Bir problem oluştu daha sonra tekrar dene",
+    "error_1" : "Çerezleri açmayı veya uzantıyı kontrol etmeyi deneyin"
 }
 
 let canvas              = document.getElementById("board");
@@ -15,7 +15,7 @@ let allowedExtensions   = ["jpeg","png"];
 function ENDECrypt(imgData){
     imgFile = imgData.files[0];
     if(imgFile){
-        imgExt = (imgFile.type).split("/")[1]; // uploaded img extension
+        imgExt = (imgFile.type).split("/")[1]; // Yüklenen resmin uzantısı
         if(allowedExtensions.includes(imgExt)){
             let reader = new FileReader();
             reader.readAsDataURL(imgFile);
@@ -23,6 +23,9 @@ function ENDECrypt(imgData){
                 let tempImage = new Image();
                 tempImage.src = reader.result;
                 tempImage.onload = function(){
+                    
+                    // deltaturk
+                    
                     let iW = canvas.width   = this.width;
                     let iH = canvas.height  = this.height;
                     canvasCtx.drawImage(tempImage, 0, 0, iW, iH);
@@ -43,7 +46,7 @@ function ENDECrypt(imgData){
                                 subScore++;
                         }
                     }
-                    if(subScore==cryptX*cryptY){ // encrypted
+                    if(subScore==cryptX*cryptY){ // Şifreleme
                         let tokenIndex  =  pxlArray[0][1];
                         let n1          = tokenIndex-1,
                             n2          = tokenIndex,
@@ -52,26 +55,29 @@ function ENDECrypt(imgData){
                         let nImgPixels  = nImgData.data;
                         for(let k = 0; k < nImgPixels.length; k+=4){
                             let m1      = nImgPixels[k],
+                                
+                                // deltaturk
+                                
                                 m2      = nImgPixels[k+1],
                                 m3      = nImgPixels[k+2];
-                            for(let q = 0; q < 256; q++) // for red 
+                            for(let q = 0; q < 256; q++) // Kırmızı renkler için
                                 if((n1*q)%255==m1){
                                     nImgPixels[k]   = q;
                                     break;
                                 }
-                            for(let q = 0; q < 256; q++) // for green
+                            for(let q = 0; q < 256; q++) // Yeşil renkler için
                                 if((n2*q)%255==m2){
                                     nImgPixels[k+1] = q;
                                     break;
                                 }
-                            for(let q = 0; q < 256; q++) // for blue
+                            for(let q = 0; q < 256; q++) // Mavi renkler için
                                 if((n3*q)%255==m3){
                                     nImgPixels[k+2] = q;
                                     break;
                                 }
                         }
                         canvasCtx.putImageData(nImgData,0 ,0);
-                    }else{ // not encrypted
+                    }else{ // Şifrelenmemiş içerik 
                         let tokenIndex  = Math.floor(Math.random() * 128);  
                         tokenIndex      = (tokenIndex > 127) ? 127 : tokenIndex;
                         let t1          = tokenIndex-1,
@@ -96,6 +102,9 @@ function ENDECrypt(imgData){
                         canvasCtx.putImageData(tImgData,0 ,0);
                     }
                 }
+                
+                // deltaturk
+                
             }
         }else{
             alert(messages["error_1"]);
